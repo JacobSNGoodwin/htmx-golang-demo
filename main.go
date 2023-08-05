@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 )
 
 func main() {
@@ -21,10 +22,18 @@ func main() {
 		log.Fatalf("PORT not provided")
 	}
 
-	app := fiber.New()
+	engine := html.New("./views", ".html")
+
+	app := fiber.New(fiber.Config{
+		Views:       engine,
+		ViewsLayout: "layouts/main",
+	})
+
+	// serve public assets
+	app.Static("/", "./public")
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+		return c.Render("index", struct{ Title string }{Title: "Hello, ya twerp!"})
 	})
 
 	go func() {
