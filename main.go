@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/gofiber/fiber/v2"
+	httpLogger "github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html/v2"
 )
 
@@ -28,8 +29,9 @@ func main() {
 		ViewsLayout: "layouts/main",
 	})
 
-	// TODO - create env package with DB conn
-	// TODO - Create data package with access to Env
+	app.Use(httpLogger.New())
+	// TODO - create env package/logger/db/etc
+	// TODO - Create service package with access to dbgo get -u go.uber.org/zap
 	// TODO - Create views/render package for rendering responses in handlers
 
 	// serve public assets
@@ -49,11 +51,12 @@ func main() {
 			log.Fatalf("listen: %s\n", err)
 		}
 	}()
+	log.Printf("\nStarting server on PORT: %s", port)
 
 	<-done
 	log.Printf("\nShutting down server on PORT: %s", port)
 
-	if err := app; err != nil {
+	if err := app.Shutdown(); err != nil {
 		log.Fatalf("Server Shutdown Failed:%+v", err)
 	}
 }
