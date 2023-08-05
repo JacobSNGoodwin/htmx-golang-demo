@@ -12,9 +12,8 @@ import (
 )
 
 func main() {
-	// To receive signal to gracefully shut down our server
 	done := make(chan os.Signal, 1)
-	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(done, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
 	var port, hasPort = os.LookupEnv("PORT")
 
@@ -29,11 +28,19 @@ func main() {
 		ViewsLayout: "layouts/main",
 	})
 
+	// TODO - create env package with DB conn
+	// TODO - Create data package with access to Env
+	// TODO - Create views/render package for rendering responses in handlers
+
 	// serve public assets
 	app.Static("/", "./public")
+	app.Post("/clicked", func(c *fiber.Ctx) error {
+		return c.SendString("Hiya")
+	})
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Render("index", struct{ Title string }{Title: "Hello, ya twerp!"})
+	admin := app.Group("/admin")
+	admin.Get("/", func(c *fiber.Ctx) error {
+		return c.Render("admin", struct{ Title string }{Title: "Hello, ya twerp!"})
 	})
 
 	go func() {
@@ -46,7 +53,7 @@ func main() {
 	<-done
 	log.Printf("\nShutting down server on PORT: %s", port)
 
-	if err := app.Shutdown(); err != nil {
+	if err := app; err != nil {
 		log.Fatalf("Server Shutdown Failed:%+v", err)
 	}
 }

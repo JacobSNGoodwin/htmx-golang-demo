@@ -1,0 +1,11 @@
+<h1 class="text-3xl text-green-500">{{.Title}}</h1>
+<p>This is a paragraph, will it work? And now?</p>
+
+<button
+  class="border-2 border-red-500 rounded-lg p-2 cursor-pointer"
+  hx-post="/clicked"
+  hx-trigger="click"
+  hx-swap="outerHTML"
+>
+  Click Me!
+</button>
