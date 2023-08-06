@@ -15,9 +15,6 @@ import (
 )
 
 func main() {
-	done := make(chan os.Signal, 1)
-	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
-
 	env, err := environment.Load()
 
 	if err != nil {
@@ -51,26 +48,36 @@ func main() {
 		return c.Render("admin", struct{ Title string }{Title: "Hello, ya twerp!"})
 	})
 
+	// Graceful shutdown
+	quit := make(chan os.Signal, 1)
+
+	signal.Notify(quit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+
 	go func() {
-		if err := app.Listen(fmt.Sprintf(":%s", env.Config.PORT)); err != nil {
-			// TODO - replace with Fiber logger maybe?
-			env.Logger.Fatal("listen: %s\n", zap.Error(err))
+		// This blocks until a signal is passed into the quit channel
+		<-quit
+
+		env.Logger.Info("Shutting down server", zap.String(
+			"PORT",
+			env.Config.PORT,
+		))
+
+		if err := app.Shutdown(); err != nil {
+			env.Logger.Fatal("Server Shutdown Failed", zap.Error(err))
 		}
 	}()
+
 	env.Logger.Info("Starting server", zap.String(
 		"PORT",
 		env.Config.PORT,
 	))
 
-	<-done
-	env.Logger.Info("\nShutting down server", zap.String(
-		"PORT",
-		env.Config.PORT,
-	))
-
-	if err := app.Shutdown(); err != nil {
-		env.Logger.Fatal("Server Shutdown Failed", zap.Error(err))
+	// app.Listen completes on successful app.Shutdown in goroutine
+	if err := app.Listen(fmt.Sprintf(":%s", env.Config.PORT)); err != nil {
+		env.Logger.Fatal("Server failed to listen", zap.Error(err))
 	}
 
-	env.Logger.Info("Server completed shutdown")
+	env.Logger.Info("Server completed shutdown... closing connections")
+
+	// TODO - close DB -> create env.Close method to shut down data and stuff
 }
