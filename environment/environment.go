@@ -10,11 +10,13 @@ import (
 	_ "github.com/libsql/libsql-client-go/libsql"
 )
 
+// could define interfaces here for any logger along with required implementations
+
 type CONFIG struct{}
 
 type Environment struct {
 	DB     sql.DB
-	Congig CONFIG
+	Config CONFIG
 }
 
 func New() (Environment, error) {

@@ -14,7 +14,7 @@ import (
 
 func main() {
 	done := make(chan os.Signal, 1)
-	signal.Notify(done, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
 	var port, hasPort = os.LookupEnv("PORT")
 
@@ -31,12 +31,15 @@ func main() {
 
 	app.Use(httpLogger.New())
 	// TODO - create env package/logger/db/etc
-	// TODO - Create service package with access to dbgo get -u go.uber.org/zap
-	// TODO - Create views/render package for rendering responses in handlers
+	// TODO - create data layer for raw db request
+	// TODO - create service layer which returns data needed by views
+	// TODO - create routes with dependency of service
+	// We'll render views and set location headers inside of routes
 
 	// serve public assets
 	app.Static("/", "./public")
 	app.Post("/clicked", func(c *fiber.Ctx) error {
+		// c.Append("HX-Redirect", "/")
 		return c.SendString("Hiya")
 	})
 
