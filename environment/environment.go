@@ -5,20 +5,47 @@ package environment
  */
 
 import (
-	"database/sql"
+	"errors"
+	"log"
+	"os"
 
 	_ "github.com/libsql/libsql-client-go/libsql"
+	"go.uber.org/zap"
 )
 
 // could define interfaces here for any logger along with required implementations
 
-type CONFIG struct{}
+type CONFIG struct {
+	PORT string
+}
 
 type Environment struct {
-	DB     sql.DB
+	// DB     sql.DB
+	Logger *zap.Logger
 	Config CONFIG
 }
 
-func New() (Environment, error) {
-	return Environment{}, nil
+func Load() (*Environment, error) {
+	logger, err := zap.NewDevelopment()
+
+	defer logger.Sync()
+	if err != nil {
+		log.Fatalln("Unable to instantiate logger")
+	}
+
+	var port, hasPort = os.LookupEnv("PORT")
+	if !hasPort {
+		logger.Warn(
+			"HTTP Server Port Not configured",
+		)
+		return nil, errors.New("HTTP Server Port Not configured")
+	}
+
+	return &Environment{
+		// DB: nil
+		Logger: logger,
+		Config: CONFIG{
+			PORT: port,
+		},
+	}, nil
 }

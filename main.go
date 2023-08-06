@@ -10,16 +10,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 	httpLogger "github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html/v2"
+	"github.jacobsngoodwin.com/htmx-golang-demo/environment"
+	"go.uber.org/zap"
 )
 
 func main() {
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
-	var port, hasPort = os.LookupEnv("PORT")
+	env, err := environment.Load()
 
-	if !hasPort {
-		log.Fatalf("PORT not provided")
+	if err != nil {
+		log.Fatalf("Failed LOAD Environment")
 	}
 
 	engine := html.New("./views", ".html")
@@ -30,7 +32,8 @@ func main() {
 	})
 
 	app.Use(httpLogger.New())
-	// TODO - create env package/logger/db/etc
+	// TODO - create env package for logger/db and other env variable dependent
+	// stuffs
 	// TODO - create data layer for raw db request
 	// TODO - create service layer which returns data needed by views
 	// TODO - create routes with dependency of service
@@ -49,17 +52,25 @@ func main() {
 	})
 
 	go func() {
-		if err := app.Listen(fmt.Sprintf(":%s", port)); err != nil {
+		if err := app.Listen(fmt.Sprintf(":%s", env.Config.PORT)); err != nil {
 			// TODO - replace with Fiber logger maybe?
-			log.Fatalf("listen: %s\n", err)
+			env.Logger.Fatal("listen: %s\n", zap.Error(err))
 		}
 	}()
-	log.Printf("\nStarting server on PORT: %s", port)
+	env.Logger.Info("Starting server", zap.String(
+		"PORT",
+		env.Config.PORT,
+	))
 
 	<-done
-	log.Printf("\nShutting down server on PORT: %s", port)
+	env.Logger.Info("\nShutting down server", zap.String(
+		"PORT",
+		env.Config.PORT,
+	))
 
 	if err := app.Shutdown(); err != nil {
-		log.Fatalf("Server Shutdown Failed:%+v", err)
+		env.Logger.Fatal("Server Shutdown Failed", zap.Error(err))
 	}
+
+	env.Logger.Info("Server completed shutdown")
 }
