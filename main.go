@@ -45,7 +45,7 @@ func main() {
 
 	admin := app.Group("/admin")
 	admin.Get("/", func(c *fiber.Ctx) error {
-		return c.Render("admin", struct{ Title string }{Title: "Hello, yar twerp!"})
+		return c.Render("admin", struct{ Title string }{Title: "Hello, ya twerp!"})
 	})
 
 	// Graceful shutdown
