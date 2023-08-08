@@ -45,7 +45,7 @@ func main() {
 
 	admin := app.Group("/admin")
 	admin.Get("/", func(c *fiber.Ctx) error {
-		return c.Render("admin", struct{ Title string }{Title: "Hello, ya twerp!"})
+		return c.Render("admin", struct{ Title string }{Title: "Hello, yar twerp!"})
 	})
 
 	// Graceful shutdown
@@ -56,15 +56,12 @@ func main() {
 	go func() {
 		// This blocks until a signal is passed into the quit channel
 		<-quit
-
+		app.Shutdown()
 		env.Logger.Info("Shutting down server", zap.String(
 			"PORT",
 			env.Config.PORT,
 		))
 
-		if err := app.Shutdown(); err != nil {
-			env.Logger.Fatal("Server Shutdown Failed", zap.Error(err))
-		}
 	}()
 
 	env.Logger.Info("Starting server", zap.String(
@@ -79,5 +76,8 @@ func main() {
 
 	env.Logger.Info("Server completed shutdown... closing connections")
 
-	// TODO - close DB -> create env.Close method to shut down data and stuff
+	// TODO - close DB -> create env.Close method to shut down data, etc
+	if err := env.DB.Close(); err != nil {
+		env.Logger.Warn("Failed to close DB")
+	}
 }

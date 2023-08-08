@@ -44,22 +44,19 @@ func Load() (*Environment, error) {
 		return nil, errors.New("HTTP Server Port Not configured")
 	}
 
-	envType := os.Getenv("ENV_TYPE")
-
-	if envType == "" {
-		envType = "local"
-	}
-
-	var dbUrl = "file:data.db"
-
+	dbUrl := os.Getenv("DB_URL")
 	db, err := sql.Open("libsql", dbUrl)
 
 	if err != nil {
 		logger.Warn("Failed to create DB connection")
 		return nil, errors.New("failed to create DB connection")
 	}
-	// TODO - put in close method
-	defer db.Close()
+
+	if err := db.Ping(); err != nil {
+		logger.Warn("Could not ping Database")
+		return nil, errors.New("failed to ping DB")
+	}
+
 	// TODO - add TURSO connection in non-local environments
 
 	return &Environment{
@@ -67,7 +64,7 @@ func Load() (*Environment, error) {
 		Logger: logger,
 		Config: CONFIG{
 			PORT: port,
-			ENV:  envType,
+			ENV:  os.Getenv("ENV_TYPE"),
 		},
 	}, nil
 }
