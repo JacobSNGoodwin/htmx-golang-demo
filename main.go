@@ -74,10 +74,6 @@ func main() {
 		env.Logger.Fatal("Server failed to listen", zap.Error(err))
 	}
 
+	env.Close()
 	env.Logger.Info("Server completed shutdown... closing connections")
-
-	// TODO - close DB -> create env.Close method to shut down data, etc
-	if err := env.DB.Close(); err != nil {
-		env.Logger.Warn("Failed to close DB")
-	}
 }

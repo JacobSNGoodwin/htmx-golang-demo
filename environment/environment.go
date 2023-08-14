@@ -5,14 +5,13 @@ package environment
  */
 
 import (
-	"database/sql"
+	"context"
 	"errors"
 	"log"
 	"os"
 
-	_ "github.com/libsql/libsql-client-go/libsql"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
-	_ "modernc.org/sqlite"
 )
 
 // could define interfaces here for any logger along with required implementations
@@ -23,7 +22,7 @@ type CONFIG struct {
 }
 
 type Environment struct {
-	DB     *sql.DB
+	DB     *pgxpool.Pool
 	Logger *zap.Logger
 	Config CONFIG
 }
@@ -44,27 +43,24 @@ func Load() (*Environment, error) {
 		return nil, errors.New("HTTP Server Port Not configured")
 	}
 
-	dbUrl := os.Getenv("DB_URL")
-	db, err := sql.Open("libsql", dbUrl)
+	pool, err := pgxpool.New(context.Background(), os.Getenv("DB_URL"))
 
 	if err != nil {
 		logger.Warn("Failed to create DB connection")
 		return nil, errors.New("failed to create DB connection")
 	}
 
-	if err := db.Ping(); err != nil {
-		logger.Warn("Could not ping Database")
-		return nil, errors.New("failed to ping DB")
-	}
-
-	// TODO - add TURSO connection in non-local environments
-
 	return &Environment{
-		DB:     db,
+		DB:     pool,
 		Logger: logger,
 		Config: CONFIG{
 			PORT: port,
 			ENV:  os.Getenv("ENV_TYPE"),
 		},
 	}, nil
+}
+
+func (e *Environment) Close() {
+	e.Logger.Info("Closing DB pool")
+	e.DB.Close()
 }
