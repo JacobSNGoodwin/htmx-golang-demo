@@ -7,5 +7,12 @@ build-tailwind:
 db:
   turso dev --db-file data.db
 
-new-migration:
-  migrate 
+new-migration name:
+  migrate create -ext sql -dir $PWD/migrations {{name}}
+
+migrate-up count="1":
+  migrate -source file://$PWD/migrations -database $DB_URL_MIGRATION up {{count}}
+
+migrate-down count="1" rest...:
+  migrate -source file://$PWD/migrations -database $DB_URL_MIGRATION down {{count}}
+   
