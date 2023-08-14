@@ -50,6 +50,13 @@ func Load() (*Environment, error) {
 		return nil, errors.New("failed to create DB connection")
 	}
 
+	var version string
+	if err := pool.QueryRow(context.Background(), "select version()").Scan(&version); err != nil {
+		logger.Fatal("Crap, could not even query Postgres verion. Probs a prob")
+	}
+
+	logger.Info("Successfully queried DB", zap.String("PG Version", version))
+
 	return &Environment{
 		DB:     pool,
 		Logger: logger,
