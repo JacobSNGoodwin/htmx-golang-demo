@@ -18,8 +18,10 @@ func main() {
 	env, err := environment.Load()
 
 	if err != nil {
-		log.Fatalf("Failed LOAD Environment")
+		log.Fatalf("Failed LOAD Environment. %v", err)
 	}
+
+	defer env.Close()
 
 	engine := html.New("./views", ".html")
 
@@ -29,12 +31,6 @@ func main() {
 	})
 
 	app.Use(httpLogger.New())
-	// TODO - create env package for logger/db and other env variable dependent
-	// stuffs
-	// TODO - create data layer for raw db request
-	// TODO - create service layer which returns data needed by views
-	// TODO - create routes with dependency of service
-	// We'll render views and set location headers inside of routes
 
 	// serve public assets
 	app.Static("/", "./public")
@@ -74,6 +70,5 @@ func main() {
 		env.Logger.Fatal("Server failed to listen", zap.Error(err))
 	}
 
-	env.Close()
 	env.Logger.Info("Server completed shutdown... closing connections")
 }

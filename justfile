@@ -1,4 +1,6 @@
-defaulf: 
+db_url_migration := "pgx5://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME?sslmode=verify-full"
+
+default: 
   reflex -r '.*\.(html|go)$' -s -- sh -c "just build-tailwind && go run main.go"
 
 build-tailwind:
@@ -11,11 +13,11 @@ new-migration name:
   migrate create -ext sql -dir $PWD/migrations {{name}}
 
 migrate-up count="1":
-  migrate -source file://$PWD/migrations -database $DB_URL_MIGRATION up {{count}}
+  migrate -source file://$PWD/migrations -database {{db_url_migration}} up {{count}}
 
 migrate-down count="1":
-  migrate -source file://$PWD/migrations -database $DB_URL_MIGRATION down {{count}}
+  migrate -source file://$PWD/migrations -database {{db_url_migration}} down {{count}}
 
 migrate-force version:
-  migrate -source file://$PWD/migrations -database $DB_URL_MIGRATION force {{version}}
+  migrate -source file://$PWD/migrations -database {{db_url_migration}} force {{version}}
    

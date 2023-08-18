@@ -7,6 +7,7 @@ package environment
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"os"
 
@@ -43,16 +44,18 @@ func Load() (*Environment, error) {
 		return nil, errors.New("HTTP Server Port Not configured")
 	}
 
-	pool, err := pgxpool.New(context.Background(), os.Getenv("DB_URL"))
+	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=verify-full", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"), os.Getenv("DB_HOST"))
+
+	pool, err := pgxpool.New(context.Background(), connStr)
 
 	if err != nil {
-		logger.Warn("Failed to create DB connection")
+		logger.Warn("Failed to create DB connection", zap.Error(err))
 		return nil, errors.New("failed to create DB connection")
 	}
 
 	var version string
 	if err := pool.QueryRow(context.Background(), "select version()").Scan(&version); err != nil {
-		logger.Fatal("Crap, could not even query Postgres verion. Probs a prob")
+		logger.Fatal("Crap, could not even query Postgres version. Probs a prob", zap.Error(err))
 	}
 
 	logger.Info("Successfully queried DB", zap.String("PG Version", version))
