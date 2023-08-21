@@ -8,7 +8,8 @@
   - [x] - prompt type
   - [x] - prompt_details- probably a JSON type object because different types of challenges would have different prompt and responses
 
-- [ ] - move routes/handlers into a file
+- [x] - move routes/handlers into a package
 
 - [ ] - create a scripts folder which will build scripts to be used in htmx
-  - [ ] - web components folder
+  - [ ] - components folder
+  - [ ] - create a lit component and demonstrate inside of go-template

@@ -1,7 +1,7 @@
 db_url_migration := "pgx5://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME?sslmode=verify-full"
 
-default: 
-  reflex -r '.*\.(html|go)$' -s -- sh -c "just build-tailwind && go run main.go"
+default:
+  reflex -r '.*\.(html|go)$' -s -- sh -c "just build-scripts && just build-tailwind && go run main.go"
 
 build-tailwind:
   npx tailwindcss -i input.css -o ./public/output.css --minify
@@ -20,4 +20,7 @@ migrate-down count="1":
 
 migrate-force version:
   migrate -source file://$PWD/migrations -database {{db_url_migration}} force {{version}}
+
+build-scripts:
+  npm run build --prefix scripts
    

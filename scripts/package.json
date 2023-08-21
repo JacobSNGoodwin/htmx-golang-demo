@@ -1,0 +1,19 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/index.ts",
+  "module": "../public/index.js",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "parcel build"
+  },
+  "browserslist": "> 1%, last 2 versions, not dead",
+  "author": "Jacob Goodwin",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-typescript-types": "^2.9.3",
+    "parcel": "^2.9.3",
+    "typescript": "^5.1.6"
+  }
+}
