@@ -9,3 +9,6 @@
   - [x] - prompt_details- probably a JSON type object because different types of challenges would have different prompt and responses
 
 - [ ] - move routes/handlers into a file
+
+- [ ] - create a scripts folder which will build scripts to be used in htmx
+  - [ ] - web components folder

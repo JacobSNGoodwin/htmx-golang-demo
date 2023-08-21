@@ -11,6 +11,7 @@ import (
 	httpLogger "github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html/v2"
 	"github.jacobsngoodwin.com/htmx-golang-demo/environment"
+	"github.jacobsngoodwin.com/htmx-golang-demo/routes"
 	"go.uber.org/zap"
 )
 
@@ -31,17 +32,12 @@ func main() {
 	})
 
 	app.Use(httpLogger.New())
-
 	// serve public assets
 	app.Static("/", "./public")
-	app.Post("/clicked", func(c *fiber.Ctx) error {
-		// c.Append("HX-Redirect", "/")
-		return c.SendString("Hiya")
-	})
 
-	admin := app.Group("/admin")
-	admin.Get("/", func(c *fiber.Ctx) error {
-		return c.Render("admin", struct{ Title string }{Title: "Hello, ya twerp!"})
+	routes.InitializeRoutes(&routes.Config{
+		App: app,
+		Env: *env,
 	})
 
 	// Graceful shutdown
