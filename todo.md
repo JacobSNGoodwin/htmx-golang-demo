@@ -10,6 +10,9 @@
 
 - [x] - move routes/handlers into a package
 
-- [ ] - create a scripts folder which will build scripts to be used in htmx
-  - [ ] - components folder
+- [x] - create a scripts folder which will build scripts to be used in htmx
+  - [x] - components folder
+  - [ ] - change build tool to bun
   - [ ] - create a lit component and demonstrate inside of go-template
+
+- [ ] - create lit login component using Clerk

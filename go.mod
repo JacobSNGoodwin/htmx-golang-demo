@@ -2,15 +2,11 @@ module github.jacobsngoodwin.com/htmx-golang-demo
 
 go 1.20
 
-require (
-	github.com/gofiber/fiber v1.14.6
-	github.com/gofiber/fiber/v2 v2.48.0
-)
+require github.com/gofiber/fiber/v2 v2.48.0
 
 require (
 	github.com/gofiber/template v1.8.2 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
-	github.com/gorilla/schema v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/puddle/v2 v2.2.1 // indirect

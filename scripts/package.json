@@ -12,8 +12,12 @@
   "author": "Jacob Goodwin",
   "license": "ISC",
   "devDependencies": {
-    "@parcel/transformer-typescript-types": "^2.9.3",
-    "parcel": "^2.9.3",
-    "typescript": "^5.1.6"
-  }
+    "typescript": "^5.1.6",
+    "bun-types": "latest"
+  },
+  "dependencies": {
+    "htmx.org": "^1.9.4",
+    "lit": "2"
+  },
+  "type": "module"
 }

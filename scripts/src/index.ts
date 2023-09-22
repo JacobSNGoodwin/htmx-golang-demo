@@ -1,1 +1,3 @@
-console.log('Golly geez! It is working and stuff!');
+console.log('loaded the script-a-roo');
+
+import '../components/login';
