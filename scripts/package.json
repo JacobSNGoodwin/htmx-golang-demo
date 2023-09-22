@@ -12,8 +12,9 @@
   "author": "Jacob Goodwin",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^5.1.6",
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "concurrently": "^8.2.1",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
     "htmx.org": "^1.9.4",

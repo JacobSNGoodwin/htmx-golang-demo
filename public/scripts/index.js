@@ -622,7 +622,7 @@ var e6 = ((n6 = window.HTMLSlotElement) === null || n6 === undefined ? undefined
 class ProviderLogin extends s4 {
   constructor() {
     super(...arguments);
-    this.name = "Worldliness";
+    this.name = "Worldliness and such";
   }
   render() {
     return x`<p>Hello, ${this.name}!</p>`;
@@ -638,4 +638,4 @@ ProviderLogin = __decorateClass([
 // scripts/src/index.ts
 console.log("loaded the script-a-roo");
 
-//# debugId=793B3522EAFD1E7764756e2164756e21
+//# debugId=8652362BB795A31C64756e2164756e21
