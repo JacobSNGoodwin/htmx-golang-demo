@@ -618,11 +618,11 @@ var e5 = (i4, e6, n6) => {
 // scripts/node_modules/@lit/reactive-element/decorators/query-assigned-elements.js
 var n6;
 var e6 = ((n6 = window.HTMLSlotElement) === null || n6 === undefined ? undefined : n6.prototype.assignedElements) != null ? (o6, n7) => o6.assignedElements(n7) : (o6, n7) => o6.assignedNodes(n7).filter((o7) => o7.nodeType === Node.ELEMENT_NODE);
-// scripts/components/login.ts
-class ProviderLogin extends s4 {
+// scripts/src/components/test.ts
+class TestComponent extends s4 {
   constructor() {
     super(...arguments);
-    this.name = "Worldliness and such";
+    this.name = "Worldlinessly";
   }
   render() {
     return x`<p>Hello, ${this.name}!</p>`;
@@ -630,12 +630,12 @@ class ProviderLogin extends s4 {
 }
 __decorateClass([
   n5()
-], ProviderLogin.prototype, "name", 2);
-ProviderLogin = __decorateClass([
-  e4("provider-login")
-], ProviderLogin);
+], TestComponent.prototype, "name", 2);
+TestComponent = __decorateClass([
+  e4("test-component")
+], TestComponent);
 
 // scripts/src/index.ts
 console.log("loaded the script-a-roo");
 
-//# debugId=8652362BB795A31C64756e2164756e21
+//# debugId=2E0AE85F9B9F5DBF64756e2164756e21

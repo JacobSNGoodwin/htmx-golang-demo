@@ -1,3 +1,3 @@
 console.log('loaded the script-a-roo');
 
-import '../components/login';
+import './components/test';

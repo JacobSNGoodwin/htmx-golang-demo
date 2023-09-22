@@ -4,5 +4,5 @@ tmp
 
 data.db*
 
-public/scripts
 scripts/node_modules
+public/scripts

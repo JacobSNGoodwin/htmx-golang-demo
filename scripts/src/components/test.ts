@@ -1,11 +1,11 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 
-@customElement('provider-login')
-export class ProviderLogin extends LitElement {
+@customElement('test-component')
+export class TestComponent extends LitElement {
   // Declare reactive properties
   @property()
-  name?: string = 'Worldliness and such';
+  name?: string = 'Worldlinessly';
 
   // Render the UI as a function of component state
   render() {
