@@ -1,10 +1,8 @@
-import { LitElement, css, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { LitElement, html } from 'lit';
+import { customElement, property } from 'lit/decorators';
 
 @customElement('provider-login')
 export class ProviderLogin extends LitElement {
-  // Define scoped styles right with your component, in plain CSS
-
   // Declare reactive properties
   @property()
   name?: string = 'Worldliness and such';
