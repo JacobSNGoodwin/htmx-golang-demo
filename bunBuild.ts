@@ -1,7 +1,7 @@
-import { litPostCSS } from './plugins';
+import { litPostCSS } from './bunPlugins';
 
 await Bun.build({
-  entrypoints: ['./scripts/src/index.ts'],
+  entrypoints: ['./scripts/index.ts'],
   outdir: './public/scripts',
   target: 'browser',
   sourcemap: 'external',

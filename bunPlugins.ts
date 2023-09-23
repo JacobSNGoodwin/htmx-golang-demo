@@ -8,8 +8,8 @@ export const litPostCSS: BunPlugin = {
       console.log('The args in the build', args);
 
       return {
-        contents: 'Some new content!',
-        loader: 'text',
+        contents: 'console.log("Hey baybay")',
+        loader: 'ts',
       };
     });
   },

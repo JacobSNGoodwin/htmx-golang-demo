@@ -26,4 +26,4 @@ migrate-force version:
   migrate -source file://$PWD/migrations -database {{db_url_migration}} force {{version}}
 
 build-scripts:
-  bun --watch ./scripts/build.ts
+  bun --watch build.ts
