@@ -16,14 +16,15 @@ type Route struct {
 }
 
 func InitializeRoutes(c *Config) {
-
 	r := Route{
 		ENV: c.Env,
 	}
 
+	c.App.Get("/", r.Home)
+	c.App.Get("/login", r.Login)
 	c.App.Get("/admin", r.Admin)
 	c.App.Post("/clicked", func(c *fiber.Ctx) error {
 		// c.Append("HX-Redirect", "/")
-		return c.SendString("Hiya")
+		return c.SendString("Hiya there")
 	})
 }

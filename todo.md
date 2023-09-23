@@ -16,3 +16,8 @@
   - [x] - create a lit component and demonstrate inside of go-template
 
 - [ ] - create lit login component using Clerk
+  - using component so we can make use of Clerk's browser library to log in and get token
+- [ ] - how can we get scoped tailwind styles into lit component?
+- [ ] - add Clerk SDK to go library for [session verification](https://clerk.com/docs/references/go/verifying-sessions)
+- [ ] - create authorized grouped routes for applying auth middleware
+- [ ] - add clerk client to the environment

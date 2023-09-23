@@ -16,7 +16,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "clerk": "^0.8.3",
+    "@clerk/clerk-js": "^4.58.0",
     "htmx.org": "^1.9.4",
     "lit": "2"
   },
