@@ -12,6 +12,7 @@
   "author": "Jacob Goodwin",
   "license": "ISC",
   "devDependencies": {
+    "bun": "^1.0.3",
     "bun-types": "latest",
     "typescript": "^5.1.6"
   },
