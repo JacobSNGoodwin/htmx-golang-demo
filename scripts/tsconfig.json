@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*"],
+  "include": ["./**/*"],
   "compilerOptions": {
     "lib": ["ESNext"],
     "module": "ESNext", // default in bun, lit had Commonjs
