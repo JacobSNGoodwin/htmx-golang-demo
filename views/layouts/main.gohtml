@@ -9,10 +9,16 @@
       integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV"
       crossorigin="anonymous"
     ></script>
-    <script src="/scripts/index.js" type="module"></script>
+    <script type="module">
+      import { testFn } from './scripts/index.js';
+
+      console.log('executing testFn');
+      testFn();
+    </script>
     <link href="/output.css" rel="stylesheet" />
   </head>
   <body>
-    <main class="mx-auto py-4 px-2 max-w-4xl cool">{{embed}}</main>
+    <main class="mx-auto py-4 px-2 max-w-4xl bg-green-200">{{embed}}</main>
   </body>
 </html>
+

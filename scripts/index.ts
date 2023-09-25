@@ -1,4 +1,3 @@
-import './components/signupSignin';
-import './components/sampleComp';
-
-console.log('Hi, mom');
+export const testFn = () => {
+  console.log('Gee willakers, this function worksy');
+};

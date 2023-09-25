@@ -24,7 +24,7 @@ func main() {
 
 	defer env.Close()
 
-	engine := html.New("./views", ".html")
+	engine := html.New("./views", ".gohtml")
 
 	app := fiber.New(fiber.Config{
 		Views:       engine,

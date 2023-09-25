@@ -8,7 +8,7 @@ default:
   bunx concurrently -n scripts,css,server   -c red.bold,blue.bold,yellow.bold "just build-scripts" "just build-tailwind" "just go-reload" 
 
 go-reload:
-  reflex -r '.*\.(html|go)$' -s -- sh -c "go run main.go"
+  reflex -r '.*\.(html|gohtml|go)$' -s -- sh -c "go run main.go"
 
 build-tailwind:
   bunx tailwindcss -i input.css -o ./public/output.css --minify --watch
@@ -26,4 +26,4 @@ migrate-force version:
   migrate -source file://$PWD/migrations -database {{db_url_migration}} force {{version}}
 
 build-scripts:
-  bun --watch build.ts
+  bun --watch bunBuild.ts
