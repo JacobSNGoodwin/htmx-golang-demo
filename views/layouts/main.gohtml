@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Party Relay Admin</title>
+    <title>HTMX Demo</title>
     <script
       src="/htmx.min.js"
       integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV"
       crossorigin="anonymous"
     ></script>
+    {{/* This is go template, so we can conditionally include this */}}
     <script type="module">
-      import { testFn } from './scripts/index.js';
+      import { connectDevReload } from './scripts/index.js';
 
-      console.log('executing testFn');
-      testFn();
+      connectDevReload();
     </script>
     <link href="/output.css" rel="stylesheet" />
   </head>
