@@ -2,7 +2,20 @@
 /// <reference lib="dom.iterable" />
 import { nanoid } from 'nanoid';
 
-const clientId = nanoid();
+const storageKey = 'dev-server-id';
+
+const getClientId = () => {
+  const storedClientId = localStorage.getItem(storageKey);
+  if (storedClientId) {
+    return storedClientId;
+  } else {
+    const newClientId = nanoid(8);
+    localStorage.setItem(storageKey, newClientId);
+    return newClientId;
+  }
+};
+
+const clientId = getClientId();
 
 type SSEConnectedPayload = {
   id: string;
