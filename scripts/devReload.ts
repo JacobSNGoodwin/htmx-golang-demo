@@ -1,23 +1,37 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
+import { nanoid } from 'nanoid';
 
-const eventSource = new EventSource('/sse/dev-reload');
+const clientId = nanoid();
 
-export function connectDevReload() {
+type SSEConnectedPayload = {
+  id: string;
+  message: string;
+};
+
+export default function connectDevReload() {
+  console.info(
+    `Connecting to development reload event source for client: [${clientId}]`
+  );
+  const eventSource = new EventSource(`/sse/dev-reload?client_id=${clientId}`);
+
   eventSource.onerror = (event) => {
-    console.log('Server disconnected.', event);
+    console.info('Disconnected from reload server', event);
+    eventSource.close();
+
+    // janky-arse solution... but need to await for server to re-connect
+    setTimeout(function () {
+      location.reload();
+    }, 1000);
   };
 
   eventSource.addEventListener('sse_connected', (event) => {
-    console.log('Received "sse_connected" from server', event);
+    const payload = JSON.parse(event.data) as SSEConnectedPayload;
+    console.info('Received "sse_connected" from server with payload', payload);
+
+    if (clientId !== payload.id) {
+      console.warn('clientId does not match server id. Closing event source');
+      eventSource.close();
+    }
   });
-
-  eventSource.onopen = (event) => {
-    console.log('The dev-reload connection has been established.', event);
-  };
 }
-
-window.addEventListener('beforeunload', (event) => {
-  console.log('beforeunload', event);
-  eventSource.close();
-});

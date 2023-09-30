@@ -30,5 +30,5 @@ func InitializeRoutes(conf *Config) {
 	})
 
 	// // For development reload
-	// conf.App.Get("/sse/dev-reload", r.DevReload)
+	conf.App.Get("/sse/dev-reload", r.DevReload)
 }

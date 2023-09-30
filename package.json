@@ -20,7 +20,8 @@
   "dependencies": {
     "@clerk/clerk-js": "^4.58.0",
     "htmx.org": "^1.9.4",
-    "lit": "2"
+    "lit": "2",
+    "nanoid": "^5.0.1"
   },
   "type": "module"
 }

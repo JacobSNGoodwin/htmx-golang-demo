@@ -10,11 +10,14 @@
       crossorigin="anonymous"
     ></script>
     {{/* TODO - get devReload working. This is go template, so we can conditionally include modules like dev reload */}}
+    <script type="module">
+      import connectDevReload from '/scripts/devReload.js';
+      connectDevReload();
+    </script>
 
     <link href="/output.css" rel="stylesheet" />
   </head>
   <body>
-    <main class="mx-auto py-4 px-2 max-w-4xl">{{embed}}</main>
+    <main class="mx-auto py-4 px-2 max-w-4xl">{{ embed }}</main>
   </body>
 </html>
-
