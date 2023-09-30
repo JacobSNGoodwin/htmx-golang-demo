@@ -21,7 +21,8 @@ func InitializeRoutes(conf *Config) {
 	}
 
 	conf.App.Get("/", r.Home)
-	conf.App.Get("/login", r.Login)
+	conf.App.Get("/login", r.Auth)
+	conf.App.Get("/signup", r.Auth)
 	conf.App.Get("/admin", r.Admin)
 	conf.App.Post("/clicked", func(c *fiber.Ctx) error {
 		// c.Append("HX-Redirect", "/")

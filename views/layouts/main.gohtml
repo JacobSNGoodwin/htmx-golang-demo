@@ -9,16 +9,12 @@
       integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV"
       crossorigin="anonymous"
     ></script>
-    {{/* This is go template, so we can conditionally include this */}}
-    <script type="module">
-      import { connectDevReload } from './scripts/index.js';
+    {{/* TODO - get devReload working. This is go template, so we can conditionally include modules like dev reload */}}
 
-      connectDevReload();
-    </script>
     <link href="/output.css" rel="stylesheet" />
   </head>
   <body>
-    <main class="mx-auto py-4 px-2 max-w-4xl bg-green-200">{{embed}}</main>
+    <main class="mx-auto py-4 px-2 max-w-4xl">{{embed}}</main>
   </body>
 </html>
 
