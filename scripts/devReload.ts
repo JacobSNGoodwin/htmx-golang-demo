@@ -2,6 +2,7 @@
 /// <reference lib="dom.iterable" />
 import { nanoid } from 'nanoid';
 
+// I don't really know if this is even useful.
 const storageKey = 'dev-server-id';
 
 const getClientId = () => {
@@ -23,19 +24,24 @@ type SSEConnectedPayload = {
 };
 
 export default function connectDevReload() {
+  let hasPreviouslyConnected = false;
+
   console.info(
     `Connecting to development reload event source for client: [${clientId}]`
   );
   const eventSource = new EventSource(`/sse/dev-reload?client_id=${clientId}`);
 
-  eventSource.onerror = (event) => {
-    console.info('Disconnected from reload server', event);
-    eventSource.close();
+  // eventSource.onerror = (event) => {
+  //   console.debug('Received error event from server', event);
+  // };
 
-    // janky-arse solution... but need to await for server to re-connect
-    setTimeout(function () {
+  eventSource.onopen = () => {
+    if (hasPreviouslyConnected === true) {
+      eventSource.close();
       location.reload();
-    }, 1000);
+    } else {
+      hasPreviouslyConnected = true;
+    }
   };
 
   eventSource.addEventListener('sse_connected', (event) => {

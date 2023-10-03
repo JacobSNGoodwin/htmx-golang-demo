@@ -15,9 +15,10 @@
   - [x] - change build tool to bun
   - [x] - create a lit component and demonstrate inside of go-template
 
-- [ ] - create lit login component using Clerk
-  - using component so we can make use of Clerk's browser library to log in and get token
-- [ ] - how can we get scoped tailwind styles into lit component?
+- [ ] - dev server
+  - can I serve a separate process or port which doesn't reload with reflex? That way, if reflex reloads main application, this doesn't break connection.
+
+- [ ] - add Clerk client sign sign in and sign up
+- [ ] - add go Clerk client to the server environment
 - [ ] - add Clerk SDK to go library for [session verification](https://clerk.com/docs/references/go/verifying-sessions)
 - [ ] - create authorized grouped routes for applying auth middleware
-- [ ] - add clerk client to the environment
