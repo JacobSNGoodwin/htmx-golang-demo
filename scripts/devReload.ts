@@ -18,7 +18,7 @@ const getClientId = () => {
 
 const clientId = getClientId();
 
-type SSEConnectedPayload = {
+type SSEMessagePayload = {
   id: string;
   message: string;
 };
@@ -31,10 +31,6 @@ export default function connectDevReload() {
   );
   const eventSource = new EventSource(`/sse/dev-reload?client_id=${clientId}`);
 
-  // eventSource.onerror = (event) => {
-  //   console.debug('Received error event from server', event);
-  // };
-
   eventSource.onopen = () => {
     if (hasPreviouslyConnected === true) {
       eventSource.close();
@@ -45,12 +41,18 @@ export default function connectDevReload() {
   };
 
   eventSource.addEventListener('sse_connected', (event) => {
-    const payload = JSON.parse(event.data) as SSEConnectedPayload;
+    const payload = JSON.parse(event.data) as SSEMessagePayload;
     console.info('Received "sse_connected" from server with payload', payload);
 
     if (clientId !== payload.id) {
       console.warn('clientId does not match server id. Closing event source');
       eventSource.close();
     }
+  });
+
+  eventSource.addEventListener('rebuilding', (event) => {
+    const payload = JSON.parse(event.data) as SSEMessagePayload;
+    console.info('Received "rebuilding" from server with payload', payload);
+    hasPreviouslyConnected = true;
   });
 }

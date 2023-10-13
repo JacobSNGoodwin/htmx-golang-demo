@@ -13,6 +13,9 @@ go-reload:
 build-tailwind:
   bunx tailwindcss -i input.css -o ./public/output.css --minify --watch
 
+build-scripts:
+  bun build ./scripts/* --outdir ./public/scripts --target browser --sourcemap=external --minify --splitting --watch
+
 new-migration name:
   migrate create -ext sql -dir $PWD/migrations {{name}}
 
@@ -24,6 +27,3 @@ migrate-down count="1":
 
 migrate-force version:
   migrate -source file://$PWD/migrations -database {{db_url_migration}} force {{version}}
-
-build-scripts:
-  bun build ./scripts/* --outdir ./public/scripts --target browser --sourcemap=external --minify --splitting --watch

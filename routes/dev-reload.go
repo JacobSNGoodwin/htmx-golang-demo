@@ -22,18 +22,27 @@ func (r *Route) DevReload(c *fiber.Ctx) error {
 	c.Set("Connection", "keep-alive")
 	c.Set("Transfer-Encoding", "chunked")
 
-	devServerData := devServerData{
+	// Perhaps not needed
+	client_id := c.Query("client_id")
+
+	connectedData := devServerData{
 		Message: fmt.Sprintf("Connection estabilished at: %v", time.Now().Local()),
-		Id:      c.Query("client_id"),
+		Id:      client_id,
 	}
 
-	devServerDataSer, _ := json.Marshal(devServerData)
+	rebuildData := devServerData{
+		Message: fmt.Sprintf("App rebuilding at at: %v", time.Now().Local()),
+		Id:      client_id,
+	}
+
+	connectedMsg, _ := json.Marshal(connectedData)
+	rebuildMsg, _ := json.Marshal(rebuildData)
 
 	// Maybe we need a channel to receive Done here, then we can block
 	// on that channel in the StreamWriter and return one it is received
 	r.ENV.Logger.Info(
-		devServerData.Message,
-		zap.String("client_id", devServerData.Id),
+		connectedData.Message,
+		zap.String("client_id", connectedData.Id),
 	)
 	done := c.Context().Done()
 
@@ -41,22 +50,17 @@ func (r *Route) DevReload(c *fiber.Ctx) error {
 		fasthttp.StreamWriter(
 			func(w *bufio.Writer) {
 				fmt.Fprintf(w, "event: sse_connected\n")
-				// TODO - make retry configurable
-				fmt.Fprintf(w, "retry: 500\n")
-				fmt.Fprintf(w, "data: %s\n\n", devServerDataSer)
-				err := w.Flush()
-				if err != nil {
-					// Refreshing page in web browser will establish a new
-					// SSE connection, but only (the last) one is alive, so
-					// dead connections must be closed here.
-					r.ENV.Logger.Warn("Error while flushing. Closing http connection.", zap.Error(err))
-
-					return
-				}
+				// fmt.Fprintf(w, "retry: 50\n")
+				fmt.Fprintf(w, "data: %s\n\n", connectedMsg)
+				w.Flush()
 
 				<-done
 
-				r.ENV.Logger.Info("Reload client closing", zap.String("client_id", devServerData.Id))
+				r.ENV.Logger.Info("Reload client closing", zap.String("client_id", client_id))
+
+				fmt.Fprintf(w, "event: rebuilding\n")
+				fmt.Fprintf(w, "data: %s\n\n", rebuildMsg)
+				w.Flush()
 			}))
 
 	return nil

@@ -48,12 +48,11 @@ func main() {
 	go func() {
 		// This blocks until a signal is passed into the quit channel
 		<-quit
-		app.Shutdown()
 		env.Logger.Info("Shutting down server", zap.String(
 			"PORT",
 			env.Config.PORT,
 		))
-
+		app.Shutdown()
 	}()
 
 	env.Logger.Info("Starting server", zap.String(
@@ -66,5 +65,5 @@ func main() {
 		env.Logger.Fatal("Server failed to listen", zap.Error(err))
 	}
 
-	env.Logger.Info("Server completed shutdown... closing connections")
+	env.Logger.Info("Server completed shutdown.")
 }
